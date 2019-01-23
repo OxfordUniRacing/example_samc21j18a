@@ -21,28 +21,30 @@ LDFLAGS += --static -Wl,--gc-sections -ffunction-sections
 
 # Target specific flags
 ARCH_FLAGS := -mthumb -mcpu=cortex-m0plus
-LDFLAGS += -Tsamc21/startup/samc21j18a_flash.ld
+LDFLAGS += -Tstartup/samc21j18a_flash.ld
 DEFS += -D__SAMC21J18A__
 
 subdirs = $(patsubst %/,%,$(filter %/,$(wildcard $(1)/*/)))
 
 # Source directories
 SRC_DIRS := \
-samc21/startup \
-$(call subdirs,hpl) \
-hal/utils/src \
-hal/src \
+startup \
+$(call subdirs,atstart/hpl) \
+atstart/hal/utils/src \
+atstart/hal/src \
+atstart \
 .
 
 # Include directories
 INC_DIRS := \
-CMSIS/Include \
-samc21/include \
-hri \
-$(call subdirs,hpl) \
-hal/utils/include \
-hal/include \
-config \
+atstart/CMSIS/Include \
+atstart/samc21/include \
+atstart/hri \
+$(call subdirs,atstart/hpl) \
+atstart/hal/utils/include \
+atstart/hal/include \
+atstart/config \
+atstart \
 .
 
 SRCS := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
