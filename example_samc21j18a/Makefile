@@ -1,5 +1,5 @@
 # Must be the same as visual studio project name
-OUTPUT_FILE_NAME = example_samc21j18a
+OUTPUT_FILE_NAME = test
 
 # Flags for debug and release builds
 ifndef RELEASE
@@ -48,17 +48,18 @@ atstart \
 .
 
 SRCS := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
+SRCS := $(filter-out atstart/main.c,$(SRCS))
 OBJS := $(SRCS:%.c=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 INCS := $(INC_DIRS:%=-I%)
 CPPFLAGS += $(DEFS) $(INCS)
 
-PREFIX ?= arm-none-eabi
-CC := $(PREFIX)-gcc
-CXX := $(PREFIX)-g++
-LD := $(PREFIX)-gcc
-OBJCOPY := $(PREFIX)-objcopy
-SIZE := $(PREFIX)-size
+PREFIX ?= arm-none-eabi-
+CC := $(PREFIX)gcc
+CXX := $(PREFIX)g++
+LD := $(PREFIX)gcc
+OBJCOPY := $(PREFIX)objcopy
+SIZE := $(PREFIX)size
 
 # Be silent per default, but 'make V=1' will show all compiler calls.
 ifneq ($(V),1)
